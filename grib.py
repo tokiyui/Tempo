@@ -24,7 +24,7 @@ def extract_grib_data(init_time, lat, lon):
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
 
-    data = {'Time': [], 'Parameter': [], 'Value': [], 'Level': []}
+    data = {'Time': [], 'Level': [], 'Parameter': [], 'Value': []}
  
     for file_name in file_names:
         file_path = os.path.join(data_dir, file_name)
@@ -35,8 +35,11 @@ def extract_grib_data(init_time, lat, lon):
         grbs = pygrib.open(file_path)
         for grb in grbs:
             lats, lons = grb.latlons()
-            lat_index = np.abs(lats - (lat-20.0)/0.1).argmin()
-            lon_index = np.abs(lons - (lon-120.0)/0.125).argmin()
+            lat_diff = np.abs(lats - lat)
+            lon_diff = np.abs(lons - lon)
+            lat_index = np.unravel_index(lat_diff.argmin(), lat_diff.shape)[0]
+            lon_index = np.unravel_index(lon_diff.argmin(), lon_diff.shape)[1]
+            print(lon_index,lat_index)
             if lat_index >= lats.shape[0] or lon_index >= lons.shape[1]:
                 print(f"Warning: Latitude or longitude {lat}, {lon} is out of bounds for file {file_name}")
                 continue
@@ -53,12 +56,12 @@ def extract_grib_data(init_time, lat, lon):
     df.to_csv(csv_file, index=False)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Extract GSM GPV data for a specific location and time.')
-    parser.add_argument('--init_time', type=str, default='2024042012', help='Initial time in YYYYMMDDHH format.')
-    parser.add_argument('--lat', type=float, default=35, help='Latitude of the location.')
-    parser.add_argument('--lon', type=float, default=135, help='Longitude of the location.')
+    #parser = argparse.ArgumentParser(description='Extract GSM GPV data for a specific location and time.')
+    #parser.add_argument('--init_time', type=str, default='2024042200', help='Initial time in YYYYMMDDHH format.')
+    #parser.add_argument('--lat', type=float, default=40, help='Latitude of the location.')
+    #parser.add_argument('--lon', type=float, default=140, help='Longitude of the location.')
  
-    args = parser.parse_args()  # Read command line arguments
+    #args = parser.parse_args()  # Read command line arguments
  
-    extract_grib_data(args.init_time, args.lat, args.lon)
-
+    #extract_grib_data(args.init_time, args.lat, args.lon)
+    extract_grib_data('2024042200', 35.692, 139.75)
