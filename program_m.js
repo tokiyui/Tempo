@@ -179,7 +179,7 @@ function selectAmedas(region, pref, amedas) {
         }),
         $.ajax({
             type: 'GET',
-            url: "https://lab.weathermap.co.jp/MSMGPV_point_ex/points.php" + (pref >= 999 ? "?a=" + (pref - 1000) : "?pref=" + pref),
+            url: "https://lab.weathermap.co.jp/MSMGPV_point/points.php" + (pref >= 999 ? "?a=" + (pref - 1000) : "?pref=" + pref),
             dataType: 'json'
         })
     ).done(function (msmgpvData, msmgpvExData) {
@@ -224,7 +224,7 @@ function update() {
         }),
         $.ajax({
             type: 'GET',
-            url: "https://lab.weathermap.co.jp/MSMGPV_point_ex/readGPV.php?amedas=" + amedas + "&ini=" + ini,
+            url: "https://lab.weathermap.co.jp/MSMGPV_point/readGPV.php?amedas=" + amedas + "&ini=" + ini,
             dataType: 'json'
         })
     ).done(function (msmgpvData, msmgpvExData) {
