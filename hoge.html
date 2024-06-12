@@ -40,14 +40,15 @@
 
     <script>
         async function fetchMetar(stationId) {
-            const url = `https://tgftp.nws.noaa.gov/data/observations/metar/stations/${stationId}.TXT`;
+            const url = `https://api.allorigins.win/get?url=${encodeURIComponent('https://tgftp.nws.noaa.gov/data/observations/metar/stations/' + stationId + '.TXT')}`;
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
                     throw new Error(`Error fetching METAR data: ${response.statusText}`);
                 }
-                const text = await response.text();
-                return text.split('\\n').filter(line => line)[1]; // Get the second line which contains the METAR report
+                const data = await response.json();
+                const text = data.contents;
+                return text.split('\n').filter(line => line)[1]; // Get the second line which contains the METAR report
             } catch (error) {
                 console.error('Error:', error);
                 return 'METAR data could not be retrieved.';
