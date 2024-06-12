@@ -1,39 +1,63 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>METAR Data</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ナウファス 観測データ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .data-section {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-  <h1>METAR Data</h1>
-
-  <div id="metarData"></div>
-
-  <script>
-    // 空港コードの配列
-    var airportCodes = ["RJSN", "RJNT", "RJNW", "RJOM", "RJFF"];
-
-    // APIからMETARデータを取得して表示する関数
-    function getAndDisplayMetarData(airportCode) {
-      var url = "https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars" +
-                "&requestType=retrieve&format=xml&hoursBeforeNow=1&mostRecentForEachStation=true&stationString=" + airportCode;
-
-      fetch(url)
-        .then(response => response.text())
-        .then(data => {
-          var metarDataDiv = document.getElementById("metarData");
-          var metarDataPre = document.createElement("pre");
-          metarDataPre.textContent = data;
-          metarDataDiv.appendChild(metarDataPre);
-        })
-        .catch(error => console.log(error));
-    }
-
-    // 各空港のMETARデータを取得して表示
-    airportCodes.forEach(function(code) {
-      getAndDisplayMetarData(code);
-    });
-  </script>
+    <h1>ナウファス 観測データ</h1>
+    <div id="kanazawa" class="data-section">
+        <h2>金沢港</h2>
+        <pre id="kanazawaData">データを取得中...</pre>
+    </div>
+    <div id="fukui" class="data-section">
+        <h2>福井港</h2>
+        <pre id="fukuiData">データを取得中...</pre>
+    </div>
+ 
+    <script>
+        async function fetchData() {
+            const urls = {
+kanazawa: 'https://nowphas.mlit.go.jp/nowphas/JP_Kanazawa.htm',
+fukui: 'https://nowphas.mlit.go.jp/nowphas/JP_Fukui.htm'
+            };
+ 
+            try {
+                for (const [port, url] of Object.entries(urls)) {
+const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const data = await response.json();
+                    const html = data.contents;
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    
+                    // ここで必要なデータを抽出
+                    // 例: const extractedData = doc.querySelector('selector').textContent;
+                    // 仮に全体のHTMLを表示
+                    const extractedData = doc.querySelector('body').innerText;
+ 
+                    // 抽出したデータを表示する
+                    document.getElementById(`${port}Data`).textContent = extractedData; // ここに抽出したデータを挿入
+                }
+            } catch (error) {
+                document.getElementById('kanazawaData').textContent = `データの取得に失敗しました: ${error}`;
+                document.getElementById('fukuiData').textContent = `データの取得に失敗しました: ${error}`;
+            }
+        }
+ 
+        document.addEventListener("DOMContentLoaded", fetchData);
+    </script>
 </body>
 </html>
