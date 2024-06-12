@@ -1,1 +1,70 @@
-
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ナウファス 観測データ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .data-section {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>ナウファス 観測データ</h1>
+    <div id="kanazawa" class="data-section">
+        <h2>金沢港</h2>
+        <pre id="kanazawaData">データを取得中...</pre>
+    </div>
+    <div id="fukui" class="data-section">
+        <h2>福井港</h2>
+        <pre id="fukuiData">データを取得中...</pre>
+    </div>
+ 
+    <script>
+        async function fetchData() {
+            const urls = {
+kanazawa: 'https://nowphas.mlit.go.jp/nip_yugiha/112/7/20240612',
+fukui: 'https://nowphas.mlit.go.jp/nip_yugiha/112/7/20240612'
+            };
+ 
+            try {
+                for (const [port, url] of Object.entries(urls)) {
+const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const data = await response.json();
+                    const html = data.contents;
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    
+                    // table3の最後の行を抽出
+                    const table3 = doc.querySelectorAll('table')[2];
+                    let extractedData = 'データが見つかりませんでした';
+                    if (table3) {
+                        const rows = table3.querySelectorAll('tr');
+                        if (rows.length > 0) {
+                            const lastRow = rows[rows.length - 1];
+                            const cells = lastRow.querySelectorAll('td');
+                            extractedData = Array.from(cells).map(cell => cell.innerText).join('\t');
+                        }
+                    }
+ 
+                    // 抽出したデータを表示する
+                    document.getElementById(`${port}Data`).textContent = extractedData;
+                }
+            } catch (error) {
+                document.getElementById('kanazawaData').textContent = `データの取得に失敗しました: ${error}`;
+                document.getElementById('fukuiData').textContent = `データの取得に失敗しました: ${error}`;
+            }
+        }
+ 
+        document.addEventListener("DOMContentLoaded", fetchData);
+    </script>
+</body>
+</html>
