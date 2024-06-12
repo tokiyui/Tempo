@@ -89,7 +89,7 @@ const points = [
 
 points.forEach(point => {
     const visibility = data[point.code]?.visibility ? data[point.code].visibility[0] : 'データなし';
-    console.log(point.code);
+    console.log(data["54232"]);
     document.getElementById(`visibility_${point.code}`).innerText = visibility;
 });
             } catch (error) {
