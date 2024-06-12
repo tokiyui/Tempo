@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>最新のMETAR報</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .metar-report {
+            margin: 20px 0;
+            padding: 10px;
+            background: #eef;
+            border-left: 5px solid #88f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>最新のMETAR報</h1>
+        <div id="reports">
+            <div class="metar-report" id="rjsn"></div>
+            <div class="metar-report" id="rjsd"></div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchMetar(stationId) {
+            const url = `https://tgftp.nws.noaa.gov/data/observations/metar/stations/${stationId}.TXT`;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Error fetching METAR data: ${response.statusText}`);
+                }
+                const text = await response.text();
+                return text.split('\\n').filter(line => line)[1]; // Get the second line which contains the METAR report
+            } catch (error) {
+                console.error('Error:', error);
+                return 'METAR data could not be retrieved.';
+            }
+        }
+
+        async function displayMetarReports() {
+            const rjsnReport = await fetchMetar('RJSN');
+            const rjsdReport = await fetchMetar('RJSD');
+
+            document.getElementById('rjsn').textContent = `RJSN: ${rjsnReport}`;
+            document.getElementById('rjsd').textContent = `RJSD: ${rjsdReport}`;
+        }
+
+        displayMetarReports();
+    </script>
+</body>
+</html>
