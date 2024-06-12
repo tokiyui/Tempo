@@ -35,6 +35,10 @@
         <div id="reports">
             <div class="metar-report" id="rjsn"></div>
             <div class="metar-report" id="rjsd"></div>
+            <div class="metar-report" id="rjnt"></div>
+            <div class="metar-report" id="rjnw"></div>
+            <div class="metar-report" id="rjnk"></div>
+            <div class="metar-report" id="rjnf"></div>
         </div>
     </div>
 
@@ -64,12 +68,25 @@
         async function displayMetarReports() {
             const rjsnReport = await fetchMetar('RJSN');
             const rjsdReport = await fetchMetar('RJSD');
-
+            const rjntReport = await fetchMetar('RJNT');
+            const rjnwReport = await fetchMetar('RJNW');
+            const rjnkReport = await fetchMetar('RJNK');
+            const rjnfReport = await fetchMetar('RJNF');
+            
             const rjsnVisibility = extractVisibility(rjsnReport);
             const rjsdVisibility = extractVisibility(rjsdReport);
+            const rjntVisibility = extractVisibility(rjntReport);
+            const rjnwVisibility = extractVisibility(rjnwReport);
+            const rjnkVisibility = extractVisibility(rjnkReport);
+            const rjnfVisibility = extractVisibility(rjnfReport);
+            
+            document.getElementById('rjsn').textContent = `新潟空港: ${rjsnVisibility}`;
+            document.getElementById('rjsd').textContent = `佐渡空港: ${rjsdVisibility}`;
+            document.getElementById('rjnt').textContent = `富山空港: ${rjsnVisibility}`;
+            document.getElementById('rjnw').textContent = `能登空港: ${rjsdVisibility}`;
+            document.getElementById('rjnk').textContent = `小松空港: ${rjsnVisibility}`;
+            document.getElementById('rjnf').textContent = `福井空港: ${rjsdVisibility}`;
 
-            document.getElementById('rjsn').textContent = `RJSN: 視程 ${rjsnVisibility} メートル`;
-            document.getElementById('rjsd').textContent = `RJSD: 視程 ${rjsdVisibility} メートル`;
         }
 
         displayMetarReports();
