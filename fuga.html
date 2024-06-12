@@ -71,6 +71,7 @@
                 const latestTimeText = await response.json();
                 const latestTime = latestTimeText.contents.trim().replace(/[-T:+]/g, '').substring(0, 12);
                 const url = `https://api.allorigins.win/get?url=https://www.jma.go.jp/bosai/amedas/data/map/${latestTime}.json`;
+                console.log(url)
                 const dataResponse = await fetch(url);
                 const data = await dataResponse.json();
 
