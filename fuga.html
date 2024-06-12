@@ -75,23 +75,23 @@
                 const dataResponse = await fetch(url);
                 const data = await dataResponse.json();
 
-const points = [
-    { code: '54232', name: '新潟' },
-    { code: '54157', name: '相川' },
-    { code: '54651', name: '高田' },
-    { code: '55102', name: '富山' },
-    { code: '55091', name: '伏木' },
-    { code: '56052', name: '輪島' },
-    { code: '56227', name: '金沢' },
-    { code: '57066', name: '福井' },
-    { code: '57248', name: '敦賀' }
-];
+                const points = [
+                    { code: '54232', name: '新潟' },
+                    { code: '54157', name: '相川' },
+                    { code: '54651', name: '高田' },
+                    { code: '55102', name: '富山' },
+                    { code: '55091', name: '伏木' },
+                    { code: '56052', name: '輪島' },
+                    { code: '56227', name: '金沢' },
+                    { code: '57066', name: '福井' },
+                    { code: '57248', name: '敦賀' }
+                ];
 
-points.forEach(point => {
-    const visibility = data[point.code]?.visibility ? data[point.code].visibility[0] : 'データなし';
-    console.log(data[point.code]);
-    document.getElementById(`visibility_${point.code}`).innerText = visibility;
-});
+                points.forEach(point => {
+                    const visibility = data[point.code]?.['visibility'] ?? 'データなし';
+                    console.log(data.contents[point.code]);
+                    document.getElementById(`visibility_${point.code}`).innerText = visibility;
+                });
             } catch (error) {
                 console.error(error);
             }
