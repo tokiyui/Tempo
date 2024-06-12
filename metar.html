@@ -1,41 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-  <title>METAR報</title>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>METAR Data</title>
 </head>
 <body>
-  <h1>METAR報</h1>
-  <div id="metar-container"></div>
+  <h1>METAR Data</h1>
+
+  <div id="metarData"></div>
 
   <script>
-    // 各空港のMETAR URL
-    var airportUrls = {
-      '新潟': 'https://www.weatheronline.jp/weather/metar?STATION=RJSN',
-      '富山': 'https://www.weatheronline.jp/weather/metar?STATION=RJNT',
-      '能登': 'https://www.weatheronline.jp/weather/metar?STATION=RJNW',
-      '小松': 'https://www.weatheronline.jp/weather/metar?STATION=RJNK',
-      '福井': 'https://www.weatheronline.jp/weather/metar?STATION=RJNF'
-    };
+    // 空港コードの配列
+    var airportCodes = ["RJSN", "RJNT", "RJNW", "RJOM", "RJFF"];
 
-    // METARデータを取得して表示する関数
-    function getMetarData(url, airport) {
-      $.ajax({
-        url: url,
-        method: 'GET',
-        dataType: 'html',
-        success: function(response) {
-          var metar = $(response).find('pre.metar').text().trim();
-          var metarHtml = '<h2>' + airport + '</h2><pre>' + metar + '</pre>';
-          $('#metar-container').append(metarHtml);
-        }
-      });
+    // APIからMETARデータを取得して表示する関数
+    function getAndDisplayMetarData(airportCode) {
+      var url = "https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars" +
+                "&requestType=retrieve&format=xml&hoursBeforeNow=1&mostRecentForEachStation=true&stationString=" + airportCode;
+
+      fetch(url)
+        .then(response => response.text())
+        .then(data => {
+          var metarDataDiv = document.getElementById("metarData");
+          var metarDataPre = document.createElement("pre");
+          metarDataPre.textContent = data;
+          metarDataDiv.appendChild(metarDataPre);
+        })
+        .catch(error => console.log(error));
     }
 
-    // 各空港のMETARデータを取得
-    for (var airport in airportUrls) {
-      getMetarData(airportUrls[airport], airport);
-    }
+    // 各空港のMETARデータを取得して表示
+    airportCodes.forEach(function(code) {
+      getAndDisplayMetarData(code);
+    });
   </script>
 </body>
 </html>
