@@ -1,8 +1,13 @@
+
 <html>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <head>
 <title>海上実況確認用</title>
+    <link href="umi.gif" rel="shortcut icon">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery.lightbox-0.5.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/jquery.lightbox-0.5t.css" media="screen" />
 <style type="text/css">
 body{
 	font-family: "Hiragino Sans W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
@@ -46,8 +51,11 @@ font-weight: bold;
 <script type="text/javascript">
 
 var element;	//表示中の要素
-	
+
+$(function(){
+	element = "chouiE";
 	renewAll();
+});
 
 function renewAll(){
 	nowphas();
@@ -214,6 +222,11 @@ function nowphas(){
 		"柴山港": 310,
 		"鳥取港": 304
 	};
+	$("#kaihoContents").empty();
+	$("#kaihoErrorMessage").empty();
+	$("#kaihoContents").append('<tr><th>観測所</th><th>時刻</th><th>波高</th><th>周期</th><th>波向</th></tr>');
+	$.each(env_observ,function(name,number) {
+		$("#kaihoContents").append("<tr id='" + number + "'><td id='titenname'>" + name + "</td></tr>");
 		getNowphas(number, name);
 		setHover(number, name);
 	});
@@ -223,8 +236,21 @@ function nowphas(){
 function setHover(number, name){
 	var baseUrl="http://nowphas.mlit.go.jp/sp/yg_graphimg/";
 	var imgUrl=baseUrl + number+"_" + getYmd()+ ".png";
+	$("#"+number).hover(
+		function(){ // ｔｄ要素にマウスオーバーした時の動作
+			$("#wavePict").html("<h3>"+name+"の波</h3>");
+			$("#wavePict").append("<img src='"+imgUrl+"' width='800' />");
+			$("#wavePict").css("visibility", "visible");
+			$(this).css("cursor", "pointer"); // なんとなく、カーソルは手の形にする
+		},
+		function(){ // マウスが外れた時の動作
+			$("#wavePict").css("visibility", "hidden");
+		}
+	);
+	$("#"+number).click(function(){
+		window.open("http://nowphas.mlit.go.jp/sp/pg_yugiha/"+number+"/"); // クリックしたら画像ページを開く
+	});
 }
-	
 function getYmd(){
 	var delay=60; // データがアップされるまでの時間を考慮
 	var date=new Date();
