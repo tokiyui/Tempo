@@ -1,61 +1,41 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>最新のMETAR報</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        h1 { text-align: center; }
-        .airport { margin-bottom: 20px; }
-        .metar { font-family: monospace; background-color: #f0f0f0; padding: 10px; border-radius: 5px; }
-    </style>
+  <title>METAR報</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <h1>最新のMETAR報</h1>
- 
-    <div class="airport">
-        <h2>新潟空港 (RJSN)</h2>
-        <div class="metar" id="metar-niigata">Loading...</div>
-    </div>
- 
-    <div class="airport">
-        <h2>富山空港 (RJNT)</h2>
-        <div class="metar" id="metar-toyama">Loading...</div>
-    </div>
- 
-    <div class="airport">
-        <h2>能登空港 (RJNW)</h2>
-        <div class="metar" id="metar-noto">Loading...</div>
-    </div>
- 
-    <div class="airport">
-        <h2>小松空港 (RJNK)</h2>
-        <div class="metar" id="metar-komatsu">Loading...</div>
-    </div>
- 
-    <div class="airport">
-        <h2>福井空港 (RJNF)</h2>
-        <div class="metar" id="metar-fukui">Loading...</div>
-    </div>
- 
-    <script>
-        async function fetchMETAR(icao, elementId) {
-            try {
-const response = await fetch(`https://tgftp.nws.noaa.gov/data/observations/metar/stations/${icao}.TXT`);
-                const data = await response.text();
-                const lines = data.split('\n');
-                const metar = lines.length > 1 ? lines[1] : 'No METAR available';
-                document.getElementById(elementId).innerText = metar;
-            } catch (error) {
-                document.getElementById(elementId).innerText = 'Error fetching METAR';
-            }
+  <h1>METAR報</h1>
+  <div id="metar-container"></div>
+
+  <script>
+    // 各空港のMETAR URL
+    var airportUrls = {
+      '新潟': 'https://www.weatheronline.jp/weather/metar?STATION=RJSN',
+      '富山': 'https://www.weatheronline.jp/weather/metar?STATION=RJNT',
+      '能登': 'https://www.weatheronline.jp/weather/metar?STATION=RJNW',
+      '小松': 'https://www.weatheronline.jp/weather/metar?STATION=RJNK',
+      '福井': 'https://www.weatheronline.jp/weather/metar?STATION=RJNF'
+    };
+
+    // METARデータを取得して表示する関数
+    function getMetarData(url, airport) {
+      $.ajax({
+        url: url,
+        method: 'GET',
+        dataType: 'html',
+        success: function(response) {
+          var metar = $(response).find('pre.metar').text().trim();
+          var metarHtml = '<h2>' + airport + '</h2><pre>' + metar + '</pre>';
+          $('#metar-container').append(metarHtml);
         }
- 
-        fetchMETAR('RJSN', 'metar-niigata');
-        fetchMETAR('RJNT', 'metar-toyama');
-        fetchMETAR('RJNW', 'metar-noto');
-        fetchMETAR('RJNK', 'metar-komatsu');
-        fetchMETAR('RJNF', 'metar-fukui');
-    </script>
+      });
+    }
+
+    // 各空港のMETARデータを取得
+    for (var airport in airportUrls) {
+      getMetarData(airportUrls[airport], airport);
+    }
+  </script>
 </body>
 </html>
