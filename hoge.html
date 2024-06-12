@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>最新のMETAR報</title>
+    <title>最新の視程情報</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -31,7 +31,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>最新のMETAR報</h1>
+        <h1>最新の視程情報</h1>
         <div id="reports">
             <div class="metar-report" id="rjsn"></div>
             <div class="metar-report" id="rjsd"></div>
@@ -55,12 +55,21 @@
             }
         }
 
+        function extractVisibility(metar) {
+            const visibilityRegex = /\b(\d{4})\b/; // Matches a group of 4 digits which is a common format for visibility
+            const match = metar.match(visibilityRegex);
+            return match ? match[1] : '視程情報が見つかりませんでした';
+        }
+
         async function displayMetarReports() {
             const rjsnReport = await fetchMetar('RJSN');
             const rjsdReport = await fetchMetar('RJSD');
 
-            document.getElementById('rjsn').textContent = `RJSN: ${rjsnReport}`;
-            document.getElementById('rjsd').textContent = `RJSD: ${rjsdReport}`;
+            const rjsnVisibility = extractVisibility(rjsnReport);
+            const rjsdVisibility = extractVisibility(rjsdReport);
+
+            document.getElementById('rjsn').textContent = `RJSN: 視程 ${rjsnVisibility} メートル`;
+            document.getElementById('rjsd').textContent = `RJSD: 視程 ${rjsdVisibility} メートル`;
         }
 
         displayMetarReports();
