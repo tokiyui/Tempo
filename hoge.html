@@ -34,11 +34,9 @@
         <h1>最新の視程情報と時刻</h1>
         <div id="reports">
             <div class="metar-report" id="rjsn"></div>
-            <div class="metar-report" id="rjsd"></div>
             <div class="metar-report" id="rjnt"></div>
             <div class="metar-report" id="rjnw"></div>
             <div class="metar-report" id="rjnk"></div>
-            <div class="metar-report" id="rjnf"></div>
         </div>
     </div>
 
@@ -60,6 +58,9 @@
         }
 
         function extractVisibility(metar) {
+            if (metar.includes('CAVOK')) {
+                return '9999';
+            }
             const visibilityRegex = /\b(\d{4})\b/; // Matches a group of 4 digits which is a common format for visibility
             const match = metar.match(visibilityRegex);
             return match ? match[1] : '視程情報が見つかりませんでした';
@@ -72,14 +73,12 @@
         }
 
         async function displayMetarReports() {
-            const stations = ['RJSN', 'RJSD', 'RJNT', 'RJNW', 'RJNK', 'RJNF'];
+            const stations = ['RJSN', 'RJNT', 'RJNW', 'RJNK'];
             const stationNames = {
                 'RJSN': '新潟空港',
-                'RJSD': '佐渡空港',
                 'RJNT': '富山空港',
-                'RJNW': '能登空港（輪島）',
+                'RJNW': '能登空港',
                 'RJNK': '小松空港',
-                'RJNF': '福井空港'
             };
 
             for (const station of stations) {
