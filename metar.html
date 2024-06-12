@@ -41,12 +41,11 @@
     <script>
         async function fetchMETAR(icao, elementId) {
             try {
-const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.aviationweather.gov/adds/metars/?station_ids=' + icao + '&std_trans=standard&chk_metars=on&hoursStr=past+1+hours&chk_tafs=on&submitmet=Submit')}`);
-                const data = await response.json();
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(data.contents, "text/html");
-                const metarElement = doc.querySelector("code");
-                document.getElementById(elementId).innerText = metarElement ? metarElement.textContent : 'No METAR available';
+const response = await fetch(`https://tgftp.nws.noaa.gov/data/observations/metar/stations/${icao}.TXT`);
+                const data = await response.text();
+                const lines = data.split('\n');
+                const metar = lines.length > 1 ? lines[1] : 'No METAR available';
+                document.getElementById(elementId).innerText = metar;
             } catch (error) {
                 document.getElementById(elementId).innerText = 'Error fetching METAR';
             }
