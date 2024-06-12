@@ -214,11 +214,6 @@ function nowphas(){
 		"柴山港": 310,
 		"鳥取港": 304
 	};
-	$("#kaihoContents").empty();
-	$("#kaihoErrorMessage").empty();
-	$("#kaihoContents").append('<tr><th>観測所</th><th>時刻</th><th>波高</th><th>周期</th><th>波向</th></tr>');
-	$.each(env_observ,function(name,number) {
-		$("#kaihoContents").append("<tr id='" + number + "'><td id='titenname'>" + name + "</td></tr>");
 		getNowphas(number, name);
 		setHover(number, name);
 	});
@@ -228,21 +223,8 @@ function nowphas(){
 function setHover(number, name){
 	var baseUrl="http://nowphas.mlit.go.jp/sp/yg_graphimg/";
 	var imgUrl=baseUrl + number+"_" + getYmd()+ ".png";
-	$("#"+number).hover(
-		function(){ // ｔｄ要素にマウスオーバーした時の動作
-			$("#wavePict").html("<h3>"+name+"の波</h3>");
-			$("#wavePict").append("<img src='"+imgUrl+"' width='800' />");
-			$("#wavePict").css("visibility", "visible");
-			$(this).css("cursor", "pointer"); // なんとなく、カーソルは手の形にする
-		},
-		function(){ // マウスが外れた時の動作
-			$("#wavePict").css("visibility", "hidden");
-		}
-	);
-	$("#"+number).click(function(){
-		window.open("http://nowphas.mlit.go.jp/sp/pg_yugiha/"+number+"/"); // クリックしたら画像ページを開く
-	});
 }
+	
 function getYmd(){
 	var delay=60; // データがアップされるまでの時間を考慮
 	var date=new Date();
