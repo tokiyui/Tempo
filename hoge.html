@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>最新の視程情報</title>
+    <title>最新の視程情報と時刻</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -31,7 +31,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>最新の視程情報</h1>
+        <h1>最新の視程情報と時刻</h1>
         <div id="reports">
             <div class="metar-report" id="rjsn"></div>
             <div class="metar-report" id="rjsd"></div>
@@ -65,28 +65,29 @@
             return match ? match[1] : '視程情報が見つかりませんでした';
         }
 
-        async function displayMetarReports() {
-            const rjsnReport = await fetchMetar('RJSN');
-            const rjsdReport = await fetchMetar('RJSD');
-            const rjntReport = await fetchMetar('RJNT');
-            const rjnwReport = await fetchMetar('RJNW');
-            const rjnkReport = await fetchMetar('RJNK');
-            const rjnfReport = await fetchMetar('RJNF');
-            
-            const rjsnVisibility = extractVisibility(rjsnReport);
-            const rjsdVisibility = extractVisibility(rjsdReport);
-            const rjntVisibility = extractVisibility(rjntReport);
-            const rjnwVisibility = extractVisibility(rjnwReport);
-            const rjnkVisibility = extractVisibility(rjnkReport);
-            const rjnfVisibility = extractVisibility(rjnfReport);
-            
-            document.getElementById('rjsn').textContent = `新潟空港: ${rjsnVisibility}`;
-            document.getElementById('rjsd').textContent = `佐渡空港: ${rjsdVisibility}`;
-            document.getElementById('rjnt').textContent = `富山空港: ${rjsnVisibility}`;
-            document.getElementById('rjnw').textContent = `能登空港: ${rjsdVisibility}`;
-            document.getElementById('rjnk').textContent = `小松空港: ${rjsnVisibility}`;
-            document.getElementById('rjnf').textContent = `福井空港: ${rjsdVisibility}`;
+        function extractTime(metar) {
+            const timeRegex = /\b(\d{6}Z)\b/; // Matches the time format in METAR (e.g., 123456Z)
+            const match = metar.match(timeRegex);
+            return match ? match[1] : '時刻情報が見つかりませんでした';
+        }
 
+        async function displayMetarReports() {
+            const stations = ['RJSN', 'RJSD', 'RJNT', 'RJNW', 'RJNK', 'RJNF'];
+            const stationNames = {
+                'RJSN': '新潟空港',
+                'RJSD': '佐渡空港',
+                'RJNT': '富山空港',
+                'RJNW': '能登空港（輪島）',
+                'RJNK': '小松空港',
+                'RJNF': '福井空港'
+            };
+
+            for (const station of stations) {
+                const report = await fetchMetar(station);
+                const visibility = extractVisibility(report);
+                const time = extractTime(report);
+                document.getElementById(station.toLowerCase()).textContent = `${stationNames[station]}: 視程 ${visibility} メートル, 時刻 ${time}`;
+            }
         }
 
         displayMetarReports();
