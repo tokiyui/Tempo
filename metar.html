@@ -48,10 +48,18 @@ const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComp
                     let extractedData = 'データが見つかりませんでした';
                     if (table3) {
                         const rows = table3.querySelectorAll('tr');
-                        if (rows.length > 0) {
-                            const lastRow = rows[rows.length - 1];
-                            const cells = lastRow.querySelectorAll('td');
-                            extractedData = Array.from(cells).map(cell => cell.innerText).join('\t');
+                        for (let i = rows.length - 1; i >= 0; i--) {
+                            const cells = rows[i].querySelectorAll('td');
+                            if (cells.length === 8) {
+                                const latestData = [
+                                    cells[0].innerText.trim(),
+                                    cells[1].innerText.trim(),
+                                    cells[2].innerText.trim(),
+                                    cells[3].innerText.trim()
+                                ];
+                                extractedData = latestData.join('\t');
+                                break;
+                            }
                         }
                     }
  
