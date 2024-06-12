@@ -65,46 +65,36 @@
     </table>
 
     <script>
-        // 指定された地点番号の配列
-        const points = [
-            { code: '54232', name: '新潟' },
-            { code: '54157', name: '相川' },
-            { code: '54651', name: '高田' },
-            { code: '55102', name: '富山' },
-            { code: '55091', name: '伏木' },
-            { code: '56052', name: '輪島' },
-            { code: '56227', name: '金沢' },
-            { code: '57066', name: '福井' },
-            { code: '57248', name: '敦賀' }
-        ];
-
-        // 最新の観測時刻を取得する関数
-        async function getLatestObservationTime() {
-            const response = await fetch('https://www.jma.go.jp/bosai/amedas/data/latest_time.txt');
-            const latestTimeText = await response.text();
-            return latestTimeText.trim();  // 空白をトリム
-        }
-
-        // 視程データを取得する関数
-        async function fetchVisibilityData() {
-            const latestTime = await getLatestObservationTime();
-            const url = `https://www.jma.go.jp/bosai/amedas/data/map/${latestTime}.json`;
-            const response = await fetch(url);
-            const data = await response.json();
-            return data;
-        }
-
-        // 視程情報をテーブルに表示する関数
         async function displayVisibility() {
-            const data = await fetchVisibilityData();
+            try {
+                const response = await fetch('https://api.allorigins.win/get?url=https://www.jma.go.jp/bosai/amedas/data/latest_time.txt');
+                const latestTimeText = await response.json();
+                const latestTime = latestTimeText.contents.trim();
+                const url = `https://api.allorigins.win/get?url=https://www.jma.go.jp/bosai/amedas/data/map/${latestTime}.json`;
+                const dataResponse = await fetch(url);
+                const data = await dataResponse.json();
 
-            points.forEach(point => {
-                const visibility = data[point.code]?.['vis'] ?? 'データなし';
-                document.getElementById(`visibility_${point.code}`).innerText = visibility;
-            });
+                const points = [
+                    { code: '54232', name: '新潟' },
+                    { code: '54157', name: '相川' },
+                    { code: '54651', name: '高田' },
+                    { code: '55102', name: '富山' },
+                    { code: '55091', name: '伏木' },
+                    { code: '56052', name: '輪島' },
+                    { code: '56227', name: '金沢' },
+                    { code: '57066', name: '福井' },
+                    { code: '57248', name: '敦賀' }
+                ];
+
+                points.forEach(point => {
+                    const visibility = data.contents[point.code]?.['vis'] ?? 'データなし';
+                    document.getElementById(`visibility_${point.code}`).innerText = visibility;
+                });
+            } catch (error) {
+                console.error(error);
+            }
         }
 
-        // ページが読み込まれたら視程情報を表示
         window.onload = displayVisibility;
     </script>
 </body>
