@@ -68,7 +68,7 @@
                 const report = await fetchMetar(station);
                 const visibility = extractVisibility(report);
                 const time = extractTime(report);
-                document.getElementById(station.toLowerCase()).textContent = `${stationNames[station]}: 視程 ${visibility} メートル, 時刻 ${time}`;
+                document.getElementById(station.toLowerCase()).textContent = `${stationNames[station]}: 視程 ${visibility} メートル, (${time})`;
             }
         }
 
@@ -96,7 +96,7 @@
 
                 points.forEach(point => {
                     const visibility = data[point.code]?.['visibility'][0] ?? 'データなし';
-                    document.getElementById(`visibility_${point.code}`).innerText = `${point.name}:  視程 ${visibility} メートル`;
+                    document.getElementById(`visibility_${point.code}`).innerText = `${point.name}:  視程 ${visibility} メートル (${latestTime})`;
                 });
             } catch (error) {
                 console.error(error);
