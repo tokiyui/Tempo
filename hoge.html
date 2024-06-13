@@ -71,7 +71,7 @@
   const day = currentDate.getUTCDate();
   
   // ISO 8601形式の文字列を作成
-  const isoTimeString = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}Z`;
+  const isoTimeString = `${day.toString().padStart(2, '0')}日${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
   
   return isoTimeString;
 }
