@@ -16,9 +16,9 @@
 </head>
 <body>
     <h1>ナウファス 観測データ</h1>
-    <div id="kanazawa" class="data-section">
+    <div id="wajima" class="data-section">
         <h2>輪島港</h2>
-        <pre id="kanazawaData">データを取得中...</pre>
+        <pre id="wajimaData">データを取得中...</pre>
     </div>
     <div id="kanazawa" class="data-section">
         <h2>金沢港</h2>
@@ -28,9 +28,9 @@
         <h2>福井港</h2>
         <pre id="fukuiData">データを取得中...</pre>
     </div>
-    <div id="fukui" class="data-section">
+    <div id="tsuruga" class="data-section">
         <h2>敦賀港</h2>
-        <pre id="fukuiData">データを取得中...</pre>
+        <pre id="tsurugaData">データを取得中...</pre>
     </div>
     <script>
         async function fetchData() {
@@ -96,8 +96,10 @@ const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComp
                     document.getElementById(`${port}Data`).textContent = latestData;
                 }
             } catch (error) {
+                document.getElementById('wajimaData').textContent = `データの取得に失敗しました: ${error}`;
                 document.getElementById('kanazawaData').textContent = `データの取得に失敗しました: ${error}`;
                 document.getElementById('fukuiData').textContent = `データの取得に失敗しました: ${error}`;
+                document.getElementById('tsurugaData').textContent = `データの取得に失敗しました: ${error}`;
             }
         }
  
