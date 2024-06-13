@@ -88,8 +88,7 @@
                 ];
 
                 points.forEach(point => {
-                    const visibility = data[point.code]?.['visibility'][0] ?? 'データなし';
-                    console.log(point.code, data, data[point.code]);
+                    const visibility = data[point.code]?.['visibility'][0]/1000 ?? 'データなし';
                     document.getElementById(`visibility_${point.code}`).innerText = visibility;
                 });
             } catch (error) {
