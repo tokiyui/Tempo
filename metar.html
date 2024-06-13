@@ -17,6 +17,10 @@
 <body>
     <h1>ナウファス 観測データ</h1>
     <div id="kanazawa" class="data-section">
+        <h2>輪島港</h2>
+        <pre id="kanazawaData">データを取得中...</pre>
+    </div>
+    <div id="kanazawa" class="data-section">
         <h2>金沢港</h2>
         <pre id="kanazawaData">データを取得中...</pre>
     </div>
@@ -24,12 +28,17 @@
         <h2>福井港</h2>
         <pre id="fukuiData">データを取得中...</pre>
     </div>
- 
+    <div id="fukui" class="data-section">
+        <h2>敦賀港</h2>
+        <pre id="fukuiData">データを取得中...</pre>
+    </div>
     <script>
         async function fetchData() {
             const urls = {
-kanazawa: 'https://nowphas.mlit.go.jp/nip_yugiha/112/7/20240612',
-fukui: 'https://nowphas.mlit.go.jp/nip_yugiha/112/7/20240612'
+wajima: 'https://nowphas.mlit.go.jp/nip_yugiha/105/7/20240612'
+kanazawa: 'https://nowphas.mlit.go.jp/nip_yugiha/106/7/20240612',
+fukui: 'https://nowphas.mlit.go.jp/nip_yugiha/117/7/20240612'
+tsuruga: 'https://nowphas.mlit.go.jp/nip_yugiha/122/7/20240612'
             };
  
             function parseTime(timeStr) {
