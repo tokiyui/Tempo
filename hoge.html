@@ -56,6 +56,26 @@
             return match ? match[1] : '時刻情報が見つかりませんでした';
         }
 
+        function convertUTCTimeToISO8601(timeInUTC) {
+  // timeInUTCは'132300Z'のような形式であると想定
+  
+  // 時刻部分を抽出
+  const hours = parseInt(timeInUTC.slice(0, 2), 10);
+  const minutes = parseInt(timeInUTC.slice(2, 4), 10);
+  const seconds = parseInt(timeInUTC.slice(4, 6), 10);
+  
+  // 日付部分を作成
+  const currentDate = new Date();
+  const year = currentDate.getUTCFullYear();
+  const month = currentDate.getUTCMonth() + 1; // 月は0始まりなので+1
+  const day = currentDate.getUTCDate();
+  
+  // ISO 8601形式の文字列を作成
+  const isoTimeString = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}Z`;
+  
+  return isoTimeString;
+}
+        
         async function displayMetarReports() {
             const stations = ['RJSN', 'RJNT', 'RJNK'];
             const stationNames = {
@@ -68,19 +88,8 @@
                 const report = await fetchMetar(station);
                 const visibility = extractVisibility(report);
                 const time = extractTime(report);
-                console.log(time)
-                // タイムゾーンオフセットの計算
-                const timezoneDiffInHours = 9; // JST はUTCより9時間進んでいる
-
-                // 日付オブジェクトの作成
-                const dateInUTC = new Date(time);
-
-                // UTCから日本標準時に変換
-                const dateInJST = new Date(dateInUTC.getTime() + (timezoneDiffInHours * 60 * 60 * 1000));
-                console.log(dateInJST)
-                // 日本標準時の表示
-                const formattedTimeInJST = `${dateInJST.getDate()}日 ${dateInJST.getHours()}:${dateInJST.getMinutes().toString().padStart(2, '0')}`;
-                document.getElementById(station.toLowerCase()).textContent = `${stationNames[station]}: 視程 ${visibility} メートル, (${formattedTimeInJST})`;
+                const isoTimeString = convertUTCTimeToISO8601(time);
+                document.getElementById(station.toLowerCase()).textContent = `${stationNames[station]}: 視程 ${visibility} メートル, (${isoTimeString})`;
             }
         }
 
