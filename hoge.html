@@ -68,7 +68,18 @@
                 const report = await fetchMetar(station);
                 const visibility = extractVisibility(report);
                 const time = extractTime(report);
-                document.getElementById(station.toLowerCase()).textContent = `${stationNames[station]}: 視程 ${visibility} メートル, (${time})`;
+                // タイムゾーンオフセットの計算
+                const timezoneDiffInHours = 9; // JST はUTCより9時間進んでいる
+
+                // 日付オブジェクトの作成
+                const dateInUTC = new Date(time);
+
+                // UTCから日本標準時に変換
+                const dateInJST = new Date(dateInUTC.getTime() + (timezoneDiffInHours * 60 * 60 * 1000));
+
+                // 日本標準時の表示
+                const formattedTimeInJST = `${dateInJST.getDate()}日 ${dateInJST.getHours()}:${dateInJST.getMinutes().toString().padStart(2, '0')}`;
+                document.getElementById(station.toLowerCase()).textContent = `${stationNames[station]}: 視程 ${visibility} メートル, (${formattedTimeInJST})`;
             }
         }
 
