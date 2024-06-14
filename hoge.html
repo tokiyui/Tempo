@@ -60,18 +60,12 @@
   // timeInUTCは'132300Z'のような形式であると想定
   
   // 時刻部分を抽出
-  const hours = parseInt(timeInUTC.slice(0, 2), 10);
-  const minutes = parseInt(timeInUTC.slice(2, 4), 10);
-  const seconds = parseInt(timeInUTC.slice(4, 6), 10);
-  
-  // 日付部分を作成
-  const currentDate = new Date();
-  const year = currentDate.getUTCFullYear();
-  const month = currentDate.getUTCMonth() + 1; // 月は0始まりなので+1
-  const day = currentDate.getUTCDate();
+  const day = parseInt(timeInUTC.slice(0, 2), 10);
+  const hour = parseInt(timeInUTC.slice(2, 4), 10);
+  const minute = parseInt(timeInUTC.slice(4, 6), 10);
   
   // ISO 8601形式の文字列を作成
-  const isoTimeString = `${day.toString().padStart(2, '0')}日${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  const isoTimeString = `${day.toString().padStart(2, '0')}日${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
   
   return isoTimeString;
 }
