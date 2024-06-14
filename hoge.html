@@ -78,6 +78,7 @@ function convertUTCTimeToJST(timeInUTC) {
   
   // UTCからJSTに変換
   const dateInUTC = new Date(isoTimeString);
+    console.log(dateInUTC);
   const timezoneDiffInHours = 9; // JST はUTCより9時間進んでいる
   const dateInJST = new Date(dateInUTC.getTime() + (timezoneDiffInHours * 60 * 60 * 1000));
   
