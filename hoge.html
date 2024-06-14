@@ -65,7 +65,7 @@ function convertUTCTimeToJST(timeInUTC) {
     const day1 = parseInt(timeInUTC.slice(0, 2), 10);
     const hours = parseInt(timeInUTC.slice(2, 4), 10);
     const minutes = parseInt(timeInUTC.slice(4, 6), 10);
-    console.log(day1);
+    console.log(timeInUTC.length);
     const currentDate = new Date();
     const year = currentDate.getUTCFullYear();
     const month = currentDate.getUTCMonth() + 1; // 月は0始まりなので+1
