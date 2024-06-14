@@ -61,6 +61,7 @@ function convertUTCTimeToJST(timeInUTC) {
   
   // 132300Zから ISO 8601形式に変換
   let isoTimeString;
+    console.log(timeInUTC.length);
   if (timeInUTC.length === 6 && timeInUTC.endsWith('Z')) {
     const day1 = parseInt(timeInUTC.slice(0, 2), 10);
     const hours = parseInt(timeInUTC.slice(2, 4), 10);
