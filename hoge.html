@@ -56,19 +56,34 @@
             return match ? match[1] : '時刻情報が見つかりませんでした';
         }
 
-        function convertUTCTimeToISO8601(timeInUTC) {
-  // timeInUTCは'132300Z'のような形式であると想定
+function convertUTCTimeToJST(timeInUTC) {
+  // timeInUTCは'132300Z'または'2024-06-13T13:23:00Z'のような形式であると想定
   
-  // 時刻部分を抽出
-  const day = parseInt(timeInUTC.slice(0, 2), 10);
-  const hour = parseInt(timeInUTC.slice(2, 4), 10);
-            console.log(hour);
-  const minute = parseInt(timeInUTC.slice(4, 6), 10);
+  // 132300Zから ISO 8601形式に変換
+  let isoTimeString;
+  if (timeInUTC.length === 6 && timeInUTC.endsWith('Z')) {
+    const hours = parseInt(timeInUTC.slice(0, 2), 10);
+    const minutes = parseInt(timeInUTC.slice(2, 4), 10);
+    const seconds = parseInt(timeInUTC.slice(4, 6), 10);
+    
+    const currentDate = new Date();
+    const year = currentDate.getUTCFullYear();
+    const month = currentDate.getUTCMonth() + 1; // 月は0始まりなので+1
+    const day = currentDate.getUTCDate();
+    
+    isoTimeString = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}Z`;
+  } else {
+    isoTimeString = timeInUTC;
+  }
   
-  // ISO 8601形式の文字列を作成
-  const isoTimeString = `${day.toString().padStart(2, '0')}日${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+  // UTCからJSTに変換
+  const dateInUTC = new Date(isoTimeString);
+  const timezoneDiffInHours = 9; // JST はUTCより9時間進んでいる
+  const dateInJST = new Date(dateInUTC.getTime() + (timezoneDiffInHours * 60 * 60 * 1000));
   
-  return isoTimeString;
+  // 日本標準時の表示
+  const formattedTimeInJST = `${dateInJST.getFullYear()}年${dateInJST.getMonth()+1}月${dateInJST.getDate()}日 ${dateInJST.getHours()}:${dateInJST.getMinutes().toString().padStart(2, '0')}`;
+  return formattedTimeInJST;
 }
         
         async function displayMetarReports() {
@@ -83,7 +98,7 @@
                 const report = await fetchMetar(station);
                 const visibility = extractVisibility(report);
                 const time = extractTime(report);
-                const isoTimeString = convertUTCTimeToISO8601(time);
+                const isoTimeString = convertUTCTimeToJST(time);
                 document.getElementById(station.toLowerCase()).textContent = `${stationNames[station]}: 視程 ${visibility} メートル, (${isoTimeString})`;
             }
         }
