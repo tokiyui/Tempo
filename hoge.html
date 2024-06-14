@@ -62,14 +62,14 @@ function convertUTCTimeToJST(timeInUTC) {
   // 132300Zから ISO 8601形式に変換
   let isoTimeString;
   if (timeInUTC.length === 6 && timeInUTC.endsWith('Z')) {
-    const hours = parseInt(timeInUTC.slice(0, 2), 10);
-    const minutes = parseInt(timeInUTC.slice(2, 4), 10);
-    const seconds = parseInt(timeInUTC.slice(4, 6), 10);
+    const day = parseInt(timeInUTC.slice(0, 2), 10);
+    const hours = parseInt(timeInUTC.slice(2, 4), 10);
+    const minutes = parseInt(timeInUTC.slice(4, 6), 10);
     
     const currentDate = new Date();
     const year = currentDate.getUTCFullYear();
     const month = currentDate.getUTCMonth() + 1; // 月は0始まりなので+1
-    const day = currentDate.getUTCDate();
+    const seconds = 0;
     
     isoTimeString = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}Z`;
   } else {
