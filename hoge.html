@@ -85,6 +85,24 @@ function convertUTCTimeToJST(timeInUTC) {
   const formattedTimeInJST = `${dateInJST.getFullYear()}年${dateInJST.getMonth()+1}月${dateInJST.getDate()}日 ${dateInJST.getHours()}:${dateInJST.getMinutes().toString().padStart(2, '0')}`;
   return formattedTimeInJST;
 }
+
+function convertTime(timeInUTC) {
+  // timeInUTCは'202406140920'のような形式であると想定
+  
+  // 時刻部分を抽出
+  const hours = parseInt(timeInUTC.slice(8, 10), 10);
+  const minutes = parseInt(timeInUTC.slice(10, 12), 10);
+  
+  // 日付部分を抽出
+  const year = parseInt(timeInUTC.slice(0, 4), 10);
+  const month = parseInt(timeInUTC.slice(4, 6), 10);
+  const day = parseInt(timeInUTC.slice(6, 8), 10);
+  
+  // JSTの表示形式に変換
+  const formattedTimeInJST = `${day}日 ${hours}:${minutes.toString().padStart(2, '0')}`;
+  
+  return formattedTimeInJST;
+}
         
         async function displayMetarReports() {
             const stations = ['RJSN', 'RJNT', 'RJNK'];
@@ -127,7 +145,8 @@ function convertUTCTimeToJST(timeInUTC) {
 
                 points.forEach(point => {
                     const visibility = data[point.code]?.['visibility'][0] ?? 'データなし';
-                    document.getElementById(`visibility_${point.code}`).innerText = `${point.name}:  視程 ${visibility} メートル (${latestTime})`;
+                    const time = convertTime(latestTime);
+                    document.getElementById(`visibility_${point.code}`).innerText = `${point.name}:  視程 ${visibility} メートル (${time})`;
                 });
             } catch (error) {
                 console.error(error);
