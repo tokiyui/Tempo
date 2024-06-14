@@ -145,8 +145,8 @@ function convertTime(timeInUTC) {
 
                 points.forEach(point => {
                     const visibility = data[point.code]?.['visibility'][0] ?? 'データなし';
-                    const time = convertTime(latestTime);
-                    document.getElementById(`visibility_${point.code}`).innerText = `${point.name}:  視程 ${visibility} メートル (${time})`;
+                    const times = convertTime(latestTime);
+                    document.getElementById(`visibility_${point.code}`).innerText = `${point.name}:  視程 ${visibility} メートル (${times})`;
                 });
             } catch (error) {
                 console.error(error);
