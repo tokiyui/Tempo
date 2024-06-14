@@ -71,7 +71,7 @@ function convertUTCTimeToJST(timeInUTC) {
     const month = currentDate.getUTCMonth() + 1; // 月は0始まりなので+1
     const seconds = 0;
     
-    isoTimeString = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}Z`;
+    isoTimeString = `${year}-${month.toString().padStart(2, '0')}-${day1.toString().padStart(2, '0')}T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}Z`;
   } else {
     isoTimeString = timeInUTC;
   }
