@@ -155,6 +155,7 @@ function selectPref(pref) {
 
 function selectAmedas(region, pref, amedas) {
     r = parseInt(region);
+    console.log8amedas);
     var query = "?amedas=" + amedas + "&region=" + region + "&pref=" + pref;
     history.pushState("", "", filename + query);
     $("#a_gsmgpv_point").attr("href", gsmgpv_point_url + query);
