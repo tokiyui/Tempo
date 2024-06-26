@@ -215,7 +215,7 @@ function drawTable() {
 	var time = $.exDate(fcst.info.ini, "yyyymmddhh24miss");
 	var ini_ms = time.getTime() + 9 * HOUR;
         var ftmax = 132
-        if(time.toChar("hh") == "00" && fcst[135].surf.PRMSL !== undefined) {ftmax = 264}
+        if(time.toChar("hh") == "00" && fcst[42].surf.PRMSL !== undefined) {ftmax = 39}
 	time.setTime(ini_ms);
 	table += '<caption>' + $('#selectPoint option:selected').text() + ' (' + fcst.info.lon + 'E ' + fcst.info.lat + 'N)　初期値：' + time.toChar("yyyy年mm月dd日 hh24時(JST)") + '</caption>';
 	table += "<thead class='scrollHead'><tr class='htop'><th rowspan='2' class='td_datetime'>日時</th>";
@@ -264,7 +264,7 @@ function drawTable() {
 		"0": "西", "1": "西南西", "2": "南西", "3": "南南西", "4": "南", "5": "南南東", "6": "南東", "7": "東南東", "8": "東",
 		"-8": "東", "-7": "東北東", "-6": "北東", "-5": "北北東", "-4": "北", "-3": "北北西", "-2": "北西", "-1": "西北西"
 	};
-	//for (var ft = 0; ft <= ftmax; ft += (ft >= 132 ? 3 : 1)) {
+	//for (var ft = 0; ft <= ftmax; ft += (ft >= 39 ? 3 : 1)) {
 	for (var ft = 0; ft <= ftmax; ft += 3) {
 		if (Array.isArray(fcst[ft].surf)) {
 			continue;
@@ -296,7 +296,7 @@ function drawTable() {
 			var rh = Number(fcst[ft][lev].RH).toFixed();			
 			var vvel = Number(fcst[ft][lev].VVEL * 3600 / 100).toFixed();
 	        });     
-		if (ft % (ft >= 132 ? 6 : 3) != 0) {
+		if (ft % (ft >= 39 ? 6 : 3) != 0) {
 			table += Array(1 + 1).join("<td></td>");
 		} else {
 			//Z500塗り分け
@@ -313,7 +313,7 @@ function drawTable() {
 		        table += "<td class='td_tdd' style='background-color: " + backgroundColor_z + "'>" + z + "</td>";
 		}	
 		levs.forEach(function (lev) {
-			if (ft % (ft >= 132 ? 6 : 3) != 0) {
+			if (ft % (ft >= 39 ? 6 : 3) != 0) {
 				table += Array(1 + 1).join("<td></td>");
 				return;
 			}
@@ -356,7 +356,7 @@ function drawTable() {
                                 table += "<td class='td_tdd' style='background-color: " + backgroundColor_ttd + "'>" + tdd + "</td>";
                         }
                 }); 
-                if (ft % (ft >= 132 ? 6 : 3) != 0) {
+                if (ft % (ft >= 39 ? 6 : 3) != 0) {
 			table += Array(2 + 1).join("<td></td>");
 		} else {
 			//thetaE塗り分け
