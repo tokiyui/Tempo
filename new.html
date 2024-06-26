@@ -19,7 +19,7 @@
     </style>
 </head>
 <body>
-    <h1>Weather Data for Example Location</h1>
+    <h1>Weather Data</h1>
     <table>
         <thead>
             <tr>
@@ -27,6 +27,8 @@
                 <th>Temperature (°C)</th>
                 <th>Humidity (%)</th>
                 <th>Pressure (hPa)</th>
+                <th>Wind Speed (m/s)</th>
+                <th>Wind Direction (°)</th>
             </tr>
         </thead>
         <tbody id="weather-data">
@@ -36,41 +38,24 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const data = {
-                "meta": {
-                    "generated": "2024-06-25T12:00:00Z",
-                    "location": {
-                        "station": "44132",
-                        "name": "Example Location"
-                    }
-                },
-                "data": [
-                    {
-                        "time": "2024-06-25T12:00:00Z",
-                        "temperature": 25.4,
-                        "humidity": 70,
-                        "pressure": 1012
-                    },
-                    {
-                        "time": "2024-06-25T15:00:00Z",
-                        "temperature": 26.1,
-                        "humidity": 65,
-                        "pressure": 1010
-                    }
-                ]
-            };
-
-            const tbody = document.getElementById('weather-data');
-            data.data.forEach(record => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${new Date(record.time).toLocaleString()}</td>
-                    <td>${record.temperature}</td>
-                    <td>${record.humidity}</td>
-                    <td>${record.pressure}</td>
-                `;
-                tbody.appendChild(row);
-            });
+            fetch('https://lab.weathermap.co.jp/GPV_point_api/v1/get.py?model=GSM&ini=20240625120000&ftmax=264&amedas=44132')
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.getElementById('weather-data');
+                    data.data.forEach(record => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${new Date(record.time).toLocaleString()}</td>
+                            <td>${record.temperature}</td>
+                            <td>${record.humidity}</td>
+                            <td>${record.pressure}</td>
+                            <td>${record.wind_speed}</td>
+                            <td>${record.wind_direction}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching data:', error));
         });
     </script>
 </body>
