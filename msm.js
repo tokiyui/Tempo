@@ -45,8 +45,8 @@ window.onload = function () {
 	console.log(amedas);
 	filename = url.split("?")[0]
 	filename = filename.substring(filename.lastIndexOf('/') + 1, filename.length);
-	$.get("https://lab.weathermap.co.jp/GSMGPV_point/get_latest.php", function (timestr){
-		latest = $.exDate(timestr, "yyyymmddhh"); // UTC
+	$.get("https://lab.weathermap.co.jp/MSMGPV_point/img/latest.txt?" + Date.now(), function (timestr) {
+		latest = $.exDate(timestr, "yyyymm/yyyymmdd-hh"); // UTC
 		ini = latest.toChar("yyyymmddhh24"); // UTC
 		latest.setTime(latest.getTime() + 9 * HOUR); // UTC->JST
 		iniobj = latest; // JST
@@ -56,18 +56,17 @@ window.onload = function () {
 			minDate: "2011/05/01",
 			maxDate: latest.toChar("yyyy/mm/dd"),
 			maxTimeOfMaxDate: latest.toChar("hh24:00"),
-			allowTimes : ["03:00","09:00","15:00","21:00"],
-			todayButton: false, // 押すとバグる
+			allowTimes: ["00:00", "03:00", "06:00", "09:00", "12:00", "15:00", "18:00", "21:00"],
+			todayButton: false, // 謚ｼ縺吶→繝舌げ繧�
 			onClose: function (ctime, input) {
 				iniobj = ctime; // JST
 				tmp.setTime(iniobj.getTime() - 9 * HOUR); // JST->UTC
 				ini = tmp.toChar("yyyymmddhh24"); // UTC
 				update();
-			}, // onChangeDateTimeだと不具合を起こす
+			}, // onChangeDateTime縺�縺ｨ荳榊�蜷医ｒ襍ｷ縺薙☆
 			yearStart: 2011,
 			yearEnd: latest.toChar("yyyy"),
 		});
-		console.log(amedas);
 		selectAmedas(region, pref, amedas);
 	});
 }
