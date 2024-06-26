@@ -38,7 +38,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            fetch('https://api.allorigins.win/get?url=https://lab.weathermap.co.jp/GPV_point_api/v1/get.py?model=GSM&ini=20240625120000&ftmax=264&amedas=44132')
+            fetch('https://lab.weathermap.co.jp/GPV_point_api/v1/get.py?model=GSM&ini=20240625120000&ftmax=264&amedas=44132')
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
