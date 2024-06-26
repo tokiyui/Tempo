@@ -41,6 +41,7 @@
             fetch('https://api.allorigins.win/get?url=https://lab.weathermap.co.jp/GPV_point_api/v1/get.py?model=GSM&ini=20240625120000&ftmax=264&amedas=44132')
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data,record);
                     const tbody = document.getElementById('weather-data');
                     data.data.forEach(record => {
                         const row = document.createElement('tr');
@@ -52,7 +53,6 @@
                             <td>${record.wind_speed}</td>
                             <td>${record.wind_direction}</td>
                         `;
-                        console.log(data,record);
                         tbody.appendChild(row);
                     });
                 })
