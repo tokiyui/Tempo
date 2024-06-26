@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Data</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Weather Data for Example Location</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Temperature (°C)</th>
+                <th>Humidity (%)</th>
+                <th>Pressure (hPa)</th>
+            </tr>
+        </thead>
+        <tbody id="weather-data">
+            <!-- Data will be inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const data = {
+                "meta": {
+                    "generated": "2024-06-25T12:00:00Z",
+                    "location": {
+                        "station": "44132",
+                        "name": "Example Location"
+                    }
+                },
+                "data": [
+                    {
+                        "time": "2024-06-25T12:00:00Z",
+                        "temperature": 25.4,
+                        "humidity": 70,
+                        "pressure": 1012
+                    },
+                    {
+                        "time": "2024-06-25T15:00:00Z",
+                        "temperature": 26.1,
+                        "humidity": 65,
+                        "pressure": 1010
+                    }
+                ]
+            };
+
+            const tbody = document.getElementById('weather-data');
+            data.data.forEach(record => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${new Date(record.time).toLocaleString()}</td>
+                    <td>${record.temperature}</td>
+                    <td>${record.humidity}</td>
+                    <td>${record.pressure}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        });
+    </script>
+</body>
+</html>
