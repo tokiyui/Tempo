@@ -4,7 +4,7 @@ var dat = {};
 var points;
 var ini;
 var current_ini;
-var current_amedas;https://github.com/tokiyui/Test/blob/main/program.js
+var current_amedas;
 var amedas;
 var pref;
 var region;
@@ -41,6 +41,7 @@ window.onload = function () {
 		pref = 1000 - 1;
 		amedas = 44132;
 	}
+	console.log(amedas);
 	filename = url.split("?")[0]
 	filename = filename.substring(filename.lastIndexOf('/') + 1, filename.length);
 	$.get("https://lab.weathermap.co.jp/GSMGPV_point/get_latest.php", function (timestr){
