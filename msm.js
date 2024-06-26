@@ -174,22 +174,6 @@ function selectAmedas(region, pref, amedas) {
         }
     });
     $('#selectPref').val(pref);
-
-    $.when(
-        $.ajax({
-            type: 'GET',
-            url: "https://lab.weathermap.co.jp/MSMGPV_point/points.php" + (pref >= 999 ? "?a=" + (pref - 1000) : "?pref=" + pref),
-            dataType: 'json'
-        })
-    ).done(function (msmgpvData) {
-        points = { ...msmgpvData[0] };
-        $('#selectPoint').children().remove();
-        Object.keys(points).forEach(function (a) {
-            $('#selectPoint').append('<option value="' + a + '">' + points[a] + '</option>');
-        });
-        $('#selectPoint').val(amedas);
-        update();
-    });
 }
 
 function update() {
@@ -209,17 +193,16 @@ function update() {
     $("#a_lfmgpv_point").attr("href", lfmgpv_point_url + query);
 
     $("#contents").html("<span style='color:blue; font-weight: bold;'>データ読み込み中…</span>");
+	$.ajax({
+		type: 'GET',
+		url: "https://lab.weathermap.co.jp/MSMGPV_point/readGPV.php?amedas="+amedas+ "&ini=" + ini,
+		dataType: 'json',
+		success: function(json){
+			fcst = json;
+			drawTable();
+		}
+	});
 
-    $.when(
-        $.ajax({
-            type: 'GET',
-            url: "https://lab.weathermap.co.jp/MSMGPV_point/readGPV.php?amedas=" + amedas + "&ini=" + ini,
-            dataType: 'json'
-        })
-    ).done(function (msmgpvData) {
-	console.log(msmgpvData)
-        fcst = { ...msmgpvData[0] };
-        drawTable();
         $("#selectRegion").prop("disabled", false);
         $("#selectPref").prop("disabled", false);
         $("#selectPoint").prop("disabled", false);
