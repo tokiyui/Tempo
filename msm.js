@@ -206,7 +206,6 @@ function update() {
         $("#selectRegion").prop("disabled", false);
         $("#selectPref").prop("disabled", false);
         $("#selectPoint").prop("disabled", false);
-    });
 }
 
 function drawTable() {
