@@ -65,6 +65,7 @@ window.onload = function () {
 			yearStart: 2011,
 			yearEnd: latest.toChar("yyyy"),
 		});
+		console.log(amedas);
 		selectAmedas(region, pref, amedas);
 	});
 }
