@@ -43,18 +43,6 @@
                 .then(data => {
                     console.log(data);
                     const tbody = document.getElementById('weather-data');
-                    data.data.forEach(record => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${new Date(record.time).toLocaleString()}</td>
-                            <td>${record.temperature}</td>
-                            <td>${record.humidity}</td>
-                            <td>${record.pressure}</td>
-                            <td>${record.wind_speed}</td>
-                            <td>${record.wind_direction}</td>
-                        `;
-                        tbody.appendChild(row);
-                    });
                 })
                 .catch(error => console.error('Error fetching data:', error));
         });
