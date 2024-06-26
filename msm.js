@@ -235,7 +235,6 @@ function drawTable() {
 	$("#pointname").text($('#selectPoint option:selected').text());
 	var levs = [300, 500, 700, 850, 925];
 	var table = "<table>";
-	console.log(fcst.info.ini);
 	var time = $.exDate(fcst.info.ini, "yyyymmddhh24miss");
 	var ini_ms = time.getTime() + 9 * HOUR;
         var ftmax = 132
