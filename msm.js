@@ -141,7 +141,7 @@ function selectPref(pref) {
 	$('#selectPref').val(pref);
 	$.ajax({
 		type: 'GET',
-		url: pref >= 999 ? "https://lab.weathermap.co.jp/GSMGPV_point/points.php?a=" + (pref - 1000) : "https://lab.weathermap.co.jp/GSMGPV_point/points.php?pref=" + pref,
+		url: pref >= 999 ? "https://lab.weathermap.co.jp/MSMGPV_point/points.php?a=" + (pref - 1000) : "https://lab.weathermap.co.jp/MSMGPV_point/points.php?pref=" + pref,
 		dataType: 'json',
 		success: function (json) {
 			points = json;
