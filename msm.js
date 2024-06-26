@@ -217,6 +217,7 @@ function update() {
             dataType: 'json'
         })
     ).done(function (msmgpvData) {
+	console.log(msmgpvData)
         fcst = { ...msmgpvData[0] };
         drawTable();
         $("#selectRegion").prop("disabled", false);
