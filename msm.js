@@ -141,7 +141,7 @@ function selectPref(pref) {
 	$('#selectPref').val(pref);
 	$.ajax({
 		type: 'GET',
-		url: pref >= 999 ? "https://lab.weathermap.co.jp/GSMGPV_point/points.php?a=" + (pref - 1000) : "https://lab.weathermap.co.jp/GSMGPV_point/points.php?pref=" + pref,
+		url: pref >= 999 ? "https://lab.weathermap.co.jp/MSMGPV_point/points.php?a=" + (pref - 1000) : "https://lab.weathermap.co.jp/MSMGPV_point/points.php?pref=" + pref,
 		dataType: 'json',
 		success: function (json) {
 			points = json;
@@ -174,7 +174,7 @@ function selectAmedas(region, pref, amedas) {
     $.when(
         $.ajax({
             type: 'GET',
-            url: "https://lab.weathermap.co.jp/GSMGPV_point/points.php" + (pref >= 999 ? "?a=" + (pref - 1000) : "?pref=" + pref),
+            url: "https://lab.weathermap.co.jp/MSMGPV_point/points.php" + (pref >= 999 ? "?a=" + (pref - 1000) : "?pref=" + pref),
             dataType: 'json'
         })
     ).done(function (gsmgpvData, gsmgpvExData) {
