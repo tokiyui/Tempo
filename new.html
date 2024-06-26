@@ -41,7 +41,8 @@
             try {
                 const response = await fetch('https://api.allorigins.win/get?url=https://lab.weathermap.co.jp/GPV_point_api/v1/get.py?model=GSM&ini=20240625120000&ftmax=264&amedas=44132');
                 const data = await response.json();
-                console.log(data.replace('\', ''));
+                data2 = data.replace('\', '');
+                console.log(data2);
                 
                 const tbody = document.getElementById('weather-data');
                 data.data.forEach(record => {
