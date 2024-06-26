@@ -22,6 +22,7 @@ window.onload = function () {
 	lfmgpv_point_url = $("#a_lfmgpv_point").attr("href");
 	// URL引数の取得
 	var url = location.href;
+	console.log(url);
 	if (~url.indexOf('?')) {
 		if (~url.indexOf('&')) { // 引数3個
 			var params_ary = url.split("?")[1].split("&");
