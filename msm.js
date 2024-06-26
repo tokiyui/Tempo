@@ -144,7 +144,7 @@ function selectPref(pref) {
 	$('#selectPref').val(pref);
 	$.ajax({
 		type: 'GET',
-		url: pref >= 999 ? "https://lab.weathermap.co.jp/MSMGPV_point/points.php?a=" + (pref - 1000) : "https://lab.weathermap.co.jp/MSMGPV_point/points.php?pref=" + pref,
+		url: pref >= 999 ? "points.php?a=" + (pref - 1000) : "points.php?pref=" + pref,
 		dataType: 'json',
 		success: function (json) {
 			points = json;
@@ -173,23 +173,21 @@ function selectAmedas(region, pref, amedas) {
             $('#selectPref').append('<option value="' + String(amedas2) + '">' + pref_name[amedas2] + '</option>');
         }
     });
-    $('#selectPref').val(pref);
-
-    $.when(
-        $.ajax({
-            type: 'GET',
-            url: "https://lab.weathermap.co.jp/MSMGPV_point/points.php" + (pref >= 999 ? "?a=" + (pref - 1000) : "?pref=" + pref),
-            dataType: 'json'
-        })
-    ).done(function (msmgpvData) {
-        points = { ...msmgpvData[0] };
-        $('#selectPoint').children().remove();
-        Object.keys(points).forEach(function (a) {
-            $('#selectPoint').append('<option value="' + a + '">' + points[a] + '</option>');
-        });
-        $('#selectPoint').val(amedas);
-        update();
-    });
+	$('#selectPref').val(pref);
+	$.ajax({
+		type: 'GET',
+		url: pref >= 999 ? "points.php?a=" + (pref - 1000) : "points.php?pref=" + pref,
+		dataType: 'json',
+		success: function (json) {
+			points = json;
+			$('#selectPoint').children().remove();
+			Object.keys(points).forEach(function (a) {
+				$('#selectPoint').append('<option value="' + a + '">' + points[a] + '</option>');
+			});
+			$('#selectPoint').val(amedas);
+			update();
+		}
+	});
 }
 
 function update() {
