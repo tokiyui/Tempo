@@ -181,13 +181,8 @@ function selectAmedas(region, pref, amedas) {
             url: "https://lab.weathermap.co.jp/MSMGPV_point/points.php" + (pref >= 999 ? "?a=" + (pref - 1000) : "?pref=" + pref),
             dataType: 'json'
         })
-    ).done(function (gsmgpvData, gsmgpvExData) {
-        points = { ...gsmgpvData[0] };
-	Object.keys(gsmgpvExData[0]).forEach(function (key) {
-	    if (!points.hasOwnProperty(key)) {
-		points[key] = gsmgpvExData[0][key];
-	    }
-	});
+    ).done(function (msmgpvData) {
+        points = { ...msmgpvData[0] };
         $('#selectPoint').children().remove();
         Object.keys(points).forEach(function (a) {
             $('#selectPoint').append('<option value="' + a + '">' + points[a] + '</option>');
@@ -221,13 +216,8 @@ function update() {
             url: "https://lab.weathermap.co.jp/MSMGPV_point/readGPV.php?amedas=" + amedas + "&ini=" + ini,
             dataType: 'json'
         })
-    ).done(function (gsmgpvData, gsmgpvExData) {
-        fcst = { ...gsmgpvData[0] };
-	Object.keys(gsmgpvExData[0]).forEach(function (key) {
-	    if (!fcst.hasOwnProperty(key)) {
-		fcst[key] = gsmgpvExData[0][key];
-	    }
-	});
+    ).done(function (msmgpvData) {
+        fcst = { ...msmgpvData[0] };
         drawTable();
         $("#selectRegion").prop("disabled", false);
         $("#selectPref").prop("disabled", false);
