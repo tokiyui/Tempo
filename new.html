@@ -39,7 +39,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", async function() {
             try {
-                const response = await fetch('https://lab.weathermap.co.jp/GPV_point_api/v1/get.py?model=GSM&ini=20240627000000&ftmax=132&amedas=34392');
+                const response = await fetch('view-source:https://lab.weathermap.co.jp/GPV_point_api/v1/get.py?model=GSM&ini=20240627000000&ftmax=132&amedas=34392');
                 const data = await response.json();
                 console.log(data);
                 
