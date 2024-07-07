@@ -45,7 +45,7 @@ window.onload = function () {
 	console.log(amedas);
 	filename = url.split("?")[0]
 	filename = filename.substring(filename.lastIndexOf('/') + 1, filename.length);
-	$.get("http://lab.weathermap.co.jp/MSMGPV_point/img/latest.txt?" + Date.now(), function (timestr) {
+	$.get("https://lab.weathermap.co.jp/MSMGPV_point/img/latest.txt?" + Date.now(), function (timestr) {
 		latest = $.exDate(timestr, "yyyymm/yyyymmdd-hh"); // UTC
 		ini = latest.toChar("yyyymmddhh24"); // UTC
 		latest.setTime(latest.getTime() + 9 * HOUR); // UTC->JST
