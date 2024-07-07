@@ -22,7 +22,6 @@ window.onload = function () {
 	lfmgpv_point_url = $("#a_lfmgpv_point").attr("href");
 	// URL引数の取得
 	var url = location.href;
-	console.log(url);
 	if (~url.indexOf('?')) {
 		if (~url.indexOf('&')) { // 引数3個
 			var params_ary = url.split("?")[1].split("&");
@@ -42,7 +41,6 @@ window.onload = function () {
 		pref = 1000 - 1;
 		amedas = 44132;
 	}
-	console.log(amedas);
 	filename = url.split("?")[0]
 	filename = filename.substring(filename.lastIndexOf('/') + 1, filename.length);
 	$.get("https://lab.weathermap.co.jp/MSMGPV_point/img/latest.txt?" + Date.now(), function (timestr) {
@@ -57,13 +55,13 @@ window.onload = function () {
 			maxDate: latest.toChar("yyyy/mm/dd"),
 			maxTimeOfMaxDate: latest.toChar("hh24:00"),
 			allowTimes: ["00:00", "03:00", "06:00", "09:00", "12:00", "15:00", "18:00", "21:00"],
-			todayButton: false, // 謚ｼ縺吶→繝舌げ繧�
+			todayButton: false, // 押すとバグる
 			onClose: function (ctime, input) {
 				iniobj = ctime; // JST
 				tmp.setTime(iniobj.getTime() - 9 * HOUR); // JST->UTC
 				ini = tmp.toChar("yyyymmddhh24"); // UTC
 				update();
-			}, // onChangeDateTime縺�縺ｨ荳榊�蜷医ｒ襍ｷ縺薙☆
+			}, // onChangeDateTimeだと不具合を起こす
 			yearStart: 2011,
 			yearEnd: latest.toChar("yyyy"),
 		});
